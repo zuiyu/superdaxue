@@ -1,0 +1,330 @@
+package com.superDaxue.school.impl;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import net.sf.json.JSONObject;
+
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.filters.AndFilter;
+import org.htmlparser.filters.HasAttributeFilter;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.tags.InputTag;
+import org.htmlparser.tags.Span;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
+
+import com.superDaxue.school.ISchool;
+import com.superDaxue.tool.DateTool;
+import com.superDaxue.tool.DownLoadImg;
+
+public class Xcu implements ISchool{
+	private String username;
+	private String un_cookie;
+	private DefaultHttpClient httpclient = new DefaultHttpClient();
+
+	private String baseurl="211.67.191.45";
+	
+	public String getCheckNum(String savePath) {
+	
+		String hostUrl="";
+		try {
+			hostUrl=getGetUrl(null, "http://"+baseurl+"/");
+			un_cookie=hostUrl.substring(hostUrl.indexOf("("),hostUrl.indexOf(")")+1);
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		
+		String n = new Random().nextInt(100000)+""+new Date().getTime();
+		String image_save_path = savePath+ "checkNum" + n + ".jpg";
+		// 处理验证url
+		String img_path_url = "http://"+baseurl+"/"+un_cookie+"/CheckCode.aspx?rand=" + n;
+		try {
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT, 50000);
+			HttpGet httpGet = new HttpGet(img_path_url);
+			httpGet.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,
+					50000);
+			HttpResponse response = httpclient.execute(httpGet);
+			new DownLoadImg().download(response.getEntity().getContent(),image_save_path);
+			httpGet.releaseConnection(); // 断开连接
+			// 保存图片
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return n;
+	}
+	
+	
+	public JSONObject doLogin(String username, String password,String checkNum) {
+		
+		JSONObject jsonObject=new JSONObject();
+		this.username=username;
+		String path_index="http://"+baseurl+"/"+un_cookie+"/default2.aspx";
+		List<NameValuePair> headers= new ArrayList<NameValuePair>();
+		String html;
+		try {
+			html = doGet(headers, path_index);
+			headers= parseCoursesParam(html);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			jsonObject.put("message", "网络异常请稍后再试");
+			return jsonObject;
+		}
+		String login_url="http://"+baseurl+"/"+un_cookie+"/default2.aspx";
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("txtUserName", username));
+		nvps.add(new BasicNameValuePair("TextBox2", password));
+		nvps.add(new BasicNameValuePair("txtSecretCode", checkNum));
+		nvps.add(new BasicNameValuePair("RadioButtonList1", ""));
+		nvps.add(new BasicNameValuePair("Button1", ""));
+		nvps.add(new BasicNameValuePair("lbLanguage", ""));
+		nvps.add(new BasicNameValuePair("hidPdrs", ""));
+		nvps.add(new BasicNameValuePair("hidsc", ""));
+		nvps.addAll(headers);
+		
+		List<NameValuePair> mapHeader=new ArrayList<NameValuePair>();
+		mapHeader.add(new BasicNameValuePair("Host",baseurl));
+		mapHeader.add(new BasicNameValuePair("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+		mapHeader.add(new BasicNameValuePair("Referer","http://"+baseurl+"/default2.aspx"));
+		mapHeader.add(new BasicNameValuePair("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"));
+//		mapHeader.add(new BasicNameValuePair("Cookie",imgCookie));
+		String temp="";
+		try {
+			temp = doPost(mapHeader, nvps, login_url);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonObject.put("message", "网络异常，登录错误");
+		}		
+		if(temp.indexOf("验证码不正确")!=-1){
+			jsonObject.put("message", "验证码不正确");
+		}else 
+		if(temp.indexOf("Object moved to")!=-1){
+			jsonObject.put("result","成功！");
+			jsonObject.put("isSuccess","1");
+		}
+		else{
+			jsonObject.put("message", "登录失败请检查您的用户名和密码");
+		}
+		return jsonObject;
+	}
+	
+	public String getCookie(){
+		List<Cookie> cookies = httpclient.getCookieStore().getCookies();
+		StringBuilder cookiesSB = new StringBuilder();
+		if (cookies.isEmpty()) {
+			System.out.println("None");
+		} else {
+			for (int i = 0; i < cookies.size(); i++) {
+				cookiesSB.append(cookies.get(i).getName()).append("=")
+						.append(cookies.get(i).getValue()).append("; ");
+			}
+		}
+		return cookiesSB.toString();
+	}
+	
+	public String getScore() {
+		String path="http://"+baseurl+"/"+un_cookie+"/xscj.aspx?xh="+username+"&xm=%CD%F5%CB%C9%B7%C9&gnmkdm=N121608";
+		List<NameValuePair> mapHeader=new ArrayList<NameValuePair>();
+		mapHeader.add(new BasicNameValuePair("Host",baseurl));
+		mapHeader.add(new BasicNameValuePair("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+		mapHeader.add(new BasicNameValuePair("Referer","http://"+baseurl+"/xscj.aspx?xh="+username+"&xm=%CD%F5%CB%C9%B7%C9&gnmkdm=N121608"));
+		mapHeader.add(new BasicNameValuePair("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"));
+	//	mapHeader.add(new BasicNameValuePair("Cookie",cookie));
+		String str="";
+		try {
+			str = doGet(mapHeader,path);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return null;
+		}
+		try {
+			int yearStudent=parseYear(str);
+			if(yearStudent==-1){
+				return "";
+			}
+			List<String> yearlist=new DateTool().getYearList(yearStudent);
+			StringBuffer resultTemp=new StringBuffer();
+			for(String yearItem:yearlist){
+				String[] arr=yearItem.split(",");
+				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+				nvps.add(new BasicNameValuePair("txtQSCJ", "0"));
+				nvps.add(new BasicNameValuePair("txtZZCJ", "100"));
+				nvps.add(new BasicNameValuePair("Button1", ""));
+				nvps.add(new BasicNameValuePair("ddlXN", arr[0]));
+				nvps.add(new BasicNameValuePair("ddlXQ", arr[1]));
+				nvps.addAll(parseCoursesParam(str));
+				try {
+					String temp=doPost(mapHeader,nvps,path);
+					resultTemp.append(temp);					
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+				
+			}
+			return resultTemp.toString();
+		} catch (ParserException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public String getTimetable() {
+		String path="http://"+baseurl+"/"+un_cookie+"/xskbcx.aspx?xh="+username+"&xm=%CD%F5%B7%A8&gnmkdm=N121603";
+		List<NameValuePair> mapHeader=new ArrayList<NameValuePair>();
+		mapHeader.add(new BasicNameValuePair("Host",baseurl));
+		mapHeader.add(new BasicNameValuePair("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+		mapHeader.add(new BasicNameValuePair("Referer","http://"+baseurl+"/xs_main.aspx?xh="+username));
+		mapHeader.add(new BasicNameValuePair("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"));
+//		mapHeader.add(new BasicNameValuePair("Cookie",cookie));
+		try {
+			String temp=doGet(mapHeader,path);
+			return temp;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private String getGetUrl(List<NameValuePair> headers, String url) throws Exception {
+		httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
+		HttpGet httpget = new HttpGet(url);
+		if(headers!=null){
+			for (NameValuePair valuePair : headers) {
+				httpget.addHeader(valuePair.getName(), valuePair.getValue());
+			}
+		}
+		httpget.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,20000);
+		HttpContext httpContext = new BasicHttpContext();
+		HttpResponse response = httpclient.execute(httpget,httpContext);
+		HttpUriRequest realRequest = (HttpUriRequest)httpContext.getAttribute(ExecutionContext.HTTP_REQUEST);
+		httpget.releaseConnection();
+		return realRequest.getURI().toString();
+	}
+	
+	private String doPost(List<NameValuePair> headers,List<NameValuePair> params, String url) throws Exception {
+		httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
+		HttpPost httppost = new HttpPost(url);
+		if(headers!=null){
+			for (NameValuePair valuePair : headers) {
+				httppost.addHeader(valuePair.getName(), valuePair.getValue());
+			}
+		}
+		httppost.setEntity(new UrlEncodedFormEntity(params, Consts.UTF_8));
+		httppost.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT,20000);
+		HttpResponse response = httpclient.execute(httppost);
+		System.out.println("post : " + response.getStatusLine());
+		HttpEntity resEntity = response.getEntity();
+		String html = "";
+		if (resEntity != null) {
+			html = EntityUtils.toString(resEntity);
+		}
+		httppost.releaseConnection();
+		return html;
+	}
+
+	private String doGet(List<NameValuePair> headers, String url) throws Exception {
+		httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);// httpclient
+		HttpGet httpGet = new HttpGet(url);
+		httpGet.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
+		if(headers!=null){
+			for (NameValuePair valuePair : headers) {
+				httpGet.addHeader(valuePair.getName(), valuePair.getValue());
+			}// httpget 2秒超时
+		}
+		HttpResponse response = httpclient.execute(httpGet);
+		System.out.println("get : " + response.getStatusLine());
+		HttpEntity resEntity = response.getEntity();
+		String html = "";
+		if (resEntity != null) {
+			html = EntityUtils.toString(resEntity);
+		}
+		httpGet.releaseConnection(); // 断开连接
+		return html;
+	}
+	
+	private int parseYear(String html) throws ParserException {
+		int year=-1;
+		Parser parser = new Parser();
+		parser.setInputHTML(html);
+		parser.setEncoding("utf-8");
+		NodeFilter filter = new NodeClassFilter(Span.class);
+		NodeFilter attrFilter=new HasAttributeFilter( "id", "Label8" );
+		NodeFilter andFilter=new AndFilter(filter, attrFilter);
+		NodeList nodeList = parser.extractAllNodesThatMatch(andFilter);
+		for(int i = 0; i < nodeList.size(); i++){  
+			if(nodeList.elementAt(i) instanceof Span){  
+				Span span=(Span) nodeList.elementAt(i);
+				String info=span.toPlainTextString().trim();
+				String[] arr=info.split("：");
+				String yearStr="";
+				if(arr.length==2){
+					yearStr=arr[1].substring(0,2);
+				}
+				try{
+					year=Integer.parseInt(yearStr);
+					year+=2000;
+				}catch (Exception e) {
+					return year;
+				}
+			}
+		}
+		return year;
+	}
+	
+	
+	private List<NameValuePair> parseCoursesParam(String html) throws ParserException {
+		List<NameValuePair> list=new ArrayList<NameValuePair>();
+		Parser parser = new Parser();
+		parser.setInputHTML(html);
+		parser.setEncoding("utf-8");
+		NodeFilter filter = new NodeClassFilter(InputTag.class);
+		NodeFilter attrFilter=new HasAttributeFilter( "type", "hidden" );
+		NodeFilter andFilter=new AndFilter(filter, attrFilter);
+		NodeList nodeList = parser.extractAllNodesThatMatch(andFilter);
+		for(int i = 0; i < nodeList.size(); i++){  
+			if(nodeList.elementAt(i) instanceof InputTag){  
+				InputTag inputTag=(InputTag) nodeList.elementAt(i);
+				String info=inputTag.toHtml();
+				if(info.indexOf("name=\"")!=-1){
+					int name_start=info.indexOf("name=\"")+"name=\"".length();
+					int name_end = info.indexOf("\"",name_start+1);
+					String name=info.substring(name_start,name_end);
+					int value_start=info.indexOf("value=\"");
+					if(value_start!=-1){
+						value_start+="value=\"".length();
+						int value_end=info.indexOf("\"",value_start);
+						String value=info.substring(value_start, value_end);
+						list.add(new BasicNameValuePair(name,value));
+					}
+				}
+				
+			}
+		}
+		return list;
+	}
+	
+
+}

@@ -1,0 +1,32 @@
+package com.superDaxue.tool;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+public class DateTool {
+	public List<String> getYearList(int yearStudent){
+		List<String> yearlist = new ArrayList<String>();
+		Calendar calendar=Calendar.getInstance();
+		int year=calendar.get(Calendar.YEAR);
+		int month=calendar.get(calendar.MONTH);
+		int howtime=year-yearStudent+1;//当前年份-入学年份
+		for (int i = 0; i < howtime; i++) {
+			yearlist.add((yearStudent+i)+"-"+(yearStudent+i+1)+",1");
+			yearlist.add((yearStudent+i)+"-"+(yearStudent+i+1)+",2");
+		}
+		return yearlist;
+	}
+	public List<String> gradeYearList(int yearStudent){
+		List<String> yearlist = new ArrayList<String>();
+		Calendar calendar=Calendar.getInstance();
+		int year=calendar.get(Calendar.YEAR);
+		int month=calendar.get(calendar.MONTH);
+		int howtime=year-yearStudent+1;//当前年份-入学年份
+		for (int i = 0; i < howtime; i++) {
+			yearlist.add((yearStudent+i)+"0");
+			yearlist.add((yearStudent+i)+"1");
+		}
+		return yearlist;
+	}
+}
