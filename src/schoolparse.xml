@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<school package="com.superDaxue.parse.impl.">
+	 		<henu>HenuParse</henu><!-- 河大 -->
+	 		<ypc>YpcParse</ypc><!--绍兴理工元培学院  -->
+	 		<hainu>YpcParse</hainu><!-- 海南大学 -->
+	 		<gdqy>YpcParse</gdqy><!-- 广东轻工业职业技术学院 -->
+	 		<lnit>YpcParse</lnit><!-- 辽宁工业大学 -->
+	 		<hualixy>YpcParse</hualixy><!-- 华立学院 -->
+	 		<dfxy>DfxyParse</dfxy><!--黑龙江东方学院   -->
+	 		<hneu>HneuParse</hneu><!--湖南涉外经济学院  -->
+	 		<hhuwtian>HhuwtianParse</hhuwtian><!--海南大学天文学院  -->
+	 		<hebeu>HhuwtianParse</hebeu><!--河北工程大学  -->
+	 		<njit>NjitParse</njit><!--南京工程学院  -->
+	 		<sdmu>SdmuParse</sdmu><!-- 山东管理学院 成绩多页 -->
+	 		<xcu>SdmuParse</xcu><!-- 许昌学院 -->
+	 		<fspt>FsptParse</fspt><!--  佛山职业技术学院--> 
+	 		<ldxy>YpcParse</ldxy><!-- 陇东学院 -->
+			<xxu>XxuParse</xxu><!--新乡学院  -->
+			<dzu>NjitParse</dzu><!-- 德州学院 -->
+			<jxgymy>YpcParse</jxgymy><!-- 江西陶瓷工艺美术职业技术学院 -->
+			<gdou>NjitParse</gdou><!-- 黑龙江东方学院 -->
+			<siit>YpcParse</siit><!-- 苏州工业职业技术学院 -->
+			<changqinglzufe>ChangqinglzufeParse</changqinglzufe><!-- 兰州财经大学长青学院 -->
+			<sptc>SptcParse</sptc><!--陕西邮电职业技术学院  -->
+			<whit>SdmuParse</whit><!--芜湖职业技术学院  -->
+			<hut>YpcParse</hut><!--  湖南工业大学-->
+			<szitu>YpcParse</szitu><!--苏州信息职业技术学院  -->
+			<jxgzy type="t">XxuParse</jxgzy><!--江西工业职业技术学院  -->
+			<ycxy>YcxyParse</ycxy><!--山东英才学院  -->
+			<sanquanyixuey>SanquanyixueyParse</sanquanyixuey><!--新乡医学院三全学院  -->
+			<kmmc type="t">XxuParse</kmmc><!-- 昆明医科大学 -->
+			<fzfu>XxuParse</fzfu><!-- 福州外语外贸学院 -->
+			<guat>XxuParse</guat><!-- 桂林航天工业学院 -->
+			<xagdyz type="s">XxuParse</xagdyz><!-- 西安医学高等专科学校 -->
+			<feedu>YpcParse</feedu><!-- 哈尔滨远东理工学院 -->
+			<fjnu>FjnuParse</fjnu><!-- 福建师范大学 -->
+			<nyjj>NyjjParse</nyjj><!--黑龙江农业经济职业学院  -->
+			<yrcti>NyjjParse</yrcti><!--黄河水利职业技术学院  -->
+			<sqnc type="t">XxuParse</sqnc><!-- 商丘师范学院 -->
+			<jlnu type="t">XxuParse</jlnu><!--吉林师范大学  -->
+			<llhc>XxuParse</llhc><!--  吕梁学院-->
+			<njust>NjustParse</njust><!-- 南京理工大学 -->
+			<jxcfs>XxuParse</jxcfs><!-- 江西外语外贸职业学院 -->
+			<gdcxxy type="t">YpcParse</gdcxxy><!-- 广东创新科技职业学院 -->
+			<gdhsc>GdhscParse</gdhsc><!-- 广东财经大学华商学院  正方正选结果课表-->
+			<mdjnu>HenuParse</mdjnu><!--牡丹江师范学院  -->
+			<ntst type="t">YpcParse</ntst><!--南通科技职业学院  -->
+			<sxit>HhuwtianParse</sxit><!-- 山西工程技术学院 -->
+			<gdpa>GdpaParse</gdpa><!--广东石油化工学院  从js获取数据-->
+			<tsnc>XxuParse</tsnc><!-- 天水师范学院 -->
+			<!--江西科技师范大学理工学院（jxstnupi）ypc  -->
+			<njith>NjithParse</njith><!--南京旅游职业学院  -->
+			<!-- 重庆三峡学院(sanxiau) -->
+			<usc>UscParse</usc><!-- 南华大学 -->
+			<yykj type="t">XxuParse</yykj><!-- 商丘学院应用科技学院 -->
+			<hncu>HncuParse</hncu><!-- 湖南城市学院 -->
+			<!-- 湖南人文科技学院huhst -->
+			<!-- 广州东华职业学院(gzdhxy) -->
+			<!-- 金陵科技学院（jit） -->
+			<cdut type="s">CdutParse</cdut><!-- 成都理工大学 -->
+			<qdc>QdcParse</qdc><!-- 青岛理工大学琴岛学院 -->
+			<gdufe>NjitParse</gdufe><!-- 广东财经大学 -->
+			<!-- 广东外语外贸大学南国商学院(gwng) -->
+			<ycit>YcitParse</ycit><!-- 盐城工学院 -->
+			<!-- 云南大学 -->
+			<sxdtdx>HhuwtianParse</sxdtdx><!-- 山西大同大学 -->
+			<xzit>HhuwtianParse</xzit><!-- 徐州工程学院 -->
+			<npumd>HhuwtianParse</npumd><!-- 西北工业大学明德学院 -->
+			<njutcm>HhuwtianParse</njutcm><!-- 南京中医药大学 -->
+			<!-- 广东金融学院(gduf) -->
+			<wust>WustParse</wust><!-- 武汉科技大学 -->
+			<hljp>WustParse</hljp><!-- 黑龙江职业学院 -->
+			<jcut>JcutParse</jcut><!-- 荆楚理工学院 跟hneu只有成绩id不一样 -->
+			<!-- 安徽工程大学(ahpu) -->
+			<sziitxy>SziitxyParse</sziitxy><!-- 深圳信息职业技术学院 -->
+			<pusc>PuscParse</pusc><!-- 中国石油大学胜利学院 -->
+			<nckjxy>NckjxyParse</nckjxy><!-- 南昌航空大学科技学院 -->
+			<cust>CustParse</cust><!-- 长春理工大学 -->
+			<!-- 河北建筑工程学院 ypc -->
+			<tellhowedu>XxuParse</tellhowedu><!-- 江西泰豪动漫职业学院 -->
+			<jlbtc>HhuwtianParse</jlbtc><!-- 吉林工商学院 -->
+			<njci>NjciParse</njci><!-- 南京交通职业技术学院 -->
+			<lyun>DfxyParse</lyun><!-- 龙岩学院 -->
+			<yngsxy type="s">YpcParse</yngsxy><!-- 云南工商学院 -->
+			<shxy>XxuParse</shxy><!-- 绥化学院 -->
+			<fjcc>FjccParse</fjcc><!-- 福建商业高等专科学校 正2 -->
+			<bupt>HhuwtianParse</bupt><!-- 北京邮电大学 -->
+			<luibe>HhuwtianParse</luibe><!-- 辽宁对外经贸学院 -->
+			<ynu>YnuParse</ynu><!-- 云南大学 -->
+			<gzmodern type="t">XxuParse</gzmodern><!-- 广州现代信息工程职业技术学院 -->
+			<!-- 兰州商学院陇桥学院（lzlqc） -->
+			<hzu>XxuParse</hzu><!-- 惠州学院 -->
+	 </school>
+<!-- 
+if("henu".equals(school)){//河大
+			parse=new HenuParse();//
+		}else if("ypc".equals(school)){//绍兴理工元培学院
+			parse=new YpcParse();
+		}
+		else if("hainu".equals(school)){//海南大学
+			parse=new YpcParse();
+		}
+		else if("gdqy".equals(school)){//广东轻工业职业技术学院
+			parse=new YpcParse();
+		}
+		else if("lnit".equals(school)){//辽宁工业大学
+			parse=new YpcParse();
+		}
+		else if("hualixy".equals(school)){//华立学院
+			parse=new YpcParse();
+		}
+		else if("dfxy".equals(school)){//黑龙江东方学院
+			parse=new DfxyParse();
+		}
+		else if("hneu".equals(school)){//湖南涉外经济学院
+			parse=new HneuParse();
+		}
+		else if("hhuwtian".equals(school)){//海南大学天文学院
+			parse=new HhuwtianParse();
+		}
+		else if("hebeu".equals(school)){//河北工程大学
+			parse=new HhuwtianParse();
+		}
+		else if("njit".equals(school)){//南京工程学院
+			parse=new NjitParse();
+		}
+		else if("sdmu".equals(school)){//山东管理学院
+			parse=new SdmuParse();	//正方调课版
+		}
+		else if("xcu".equals(school)){//许昌学院
+			parse=new SdmuParse();
+		}
+		else if("fspt".equals(school)){//佛山职业技术学院
+			parse=new FsptParse();
+		}
+		else if("ldxy".equals(school)){//陇东学院
+			parse=new YpcParse();
+		}
+		else if("xxu".equals(school)){//新乡学院
+			parse=new XxuParse();
+		}
+		else if("dzu".equals(school)){//德州学院
+			parse=new NjitParse();
+		}
+		else if("jxgymy".equals(school)){//江西陶瓷工艺美术职业技术学院
+			parse=new YpcParse();
+		}
+		else if("gdou".equals(school)){//黑龙江东方学院
+			parse=new NjitParse();
+		}
+		else if("siit".equals(school)){//苏州工业职业技术学院
+			parse=new YpcParse();
+		}
+		else if("changqinglzufe".equals(school)){//兰州财经大学长青学院
+			parse=new ChangqinglzufeParse();
+		}
+ -->
+ 	
+</root>
